@@ -60,7 +60,17 @@ class ModelBenchmark:
 
 
 class BenchmarkCliApp:
-    description = "Benchmarking tool for Python"
+    @property
+    def description(self) -> ModelBenchmark:
+        lines = [f"Benchmarking App for {self.benchmark.name}"]
+        lines.append("Parameters: [")
+        for pname, pcls in zip(
+            self.benchmark.model_parameters.parameter_names,
+            self.benchmark.model_parameters.parameters_cls,
+        ):
+            lines.append(f"  {pname} ({pcls}),")
+        lines.append("]")
+        return "\n".join(lines)
 
     def __init__(self, benchmark: ModelBenchmark):
         self.benchmark = benchmark

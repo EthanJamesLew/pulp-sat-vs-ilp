@@ -47,7 +47,7 @@ if __name__ == "__main__":
             ModelParameters(
                 ["board_size"],
                 [int],
-                [np.logspace(1, np.log10(100), 10, dtype=int).tolist()],
+                [np.logspace(1, np.log10(400), 10, dtype=int).tolist()],
             ),
             build_nqueens_model,
         )
