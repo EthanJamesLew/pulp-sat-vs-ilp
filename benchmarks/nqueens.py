@@ -4,18 +4,10 @@ This benchmark runs the nqueens problem with different solvers and different
 board sizes. The board sizes are chosen logarithmically, so that the problem
 becomes more difficult as the board size increases.
 """
-import argparse
-from pathlib import Path
+
 import pulp
-from pydantic import BaseModel
 import numpy as np
-
-
-class ExperimentResult(BaseModel):
-    solver: str
-    model: str
-    solve_time: float
-    model_status: int
+from benchutils.cli import *
 
 
 def build_nqueens_model(n):
@@ -48,40 +40,17 @@ def build_nqueens_model(n):
     return queens
 
 
-def get_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--max", type=int, default=100)
-    parser.add_argument("-n", "--n_experiments", type=int, default=10)
-    parser.add_argument("-t", "--timeout", type=int, default=1000)
-    parser.add_argument("-o", "--output_dir", type=str, default=".")
-    parser.add_argument("-s", "--solver", type=str, default="PULP_CBC_CMD,CPSAT_PY")
-    return parser.parse_args()
-
-
-def run_experiment(n, solver_name, timeout) -> ExperimentResult:
-    solver = pulp.getSolver(solver_name)
-    model = build_nqueens_model(n)
-    status = model.solve(solver)
-    return ExperimentResult(
-        solver=solver_name,
-        model="nqueens",
-        solve_time=model.solutionTime,
-        model_status=status,
+if __name__ == "__main__":
+    app = BenchmarkCliApp(
+        ModelBenchmark(
+            "nqueens",
+            ModelParameters(
+                ["board_size"],
+                [int],
+                [np.logspace(1, np.log10(100), 10, dtype=int).tolist()],
+            ),
+            build_nqueens_model,
+        )
     )
 
-
-def main(n_max: int, n_experiments: int, timeout: int, output_dir: str, solvers_str: str):
-    solver_names = solvers_str.split(",") 
-    output_path = Path(output_dir)
-    board_sizes = np.logspace(1, np.log10(n_max), n_experiments, dtype=int)
-
-    for solver_name in solver_names:
-        for n in board_sizes:
-            result = run_experiment(n, solver_name, timeout)
-            with open(output_path / f"nqueens-{solver_name}-{n}.json", "w") as fp:
-                fp.write(result.json())
-
-
-if __name__ == "__main__":
-    args = get_args()
-    main(args.max, args.n_experiments, args.timeout, args.output_dir, args.solver)
+    app.run()
