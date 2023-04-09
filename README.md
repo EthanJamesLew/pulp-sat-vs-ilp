@@ -1,4 +1,6 @@
-# SAT vs ILP 
+# SAT vs ILP
+
+![nqueens benchmark example](docs/img/nqueens.svg)
 
 Many off-the-shelf mixed integer solvers (e.g., gurobi and CPLEX) are frequently used to solver satisfiability problem, i.e., constraint problem with no optimization objective. This repository contains experiments comparing common ILP solvers against common SAT solvers *for SAT problems* to determine how much faster these tailored solvers are. The goals are
 * benchmark these tools against *common*, and next *realistic*, sat benchmarks
