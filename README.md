@@ -2,7 +2,7 @@
 
 ![nqueens benchmark example](docs/img/nqueens.svg)
 
-Many off-the-shelf mixed integer solvers (e.g., gurobi and CPLEX) are frequently used to solver satisfiability problem, i.e., constraint problem with no optimization objective. This repository contains experiments comparing common ILP solvers against common SAT solvers *for SAT problems* to determine how much faster these tailored solvers are. The goals are
+General purpose mixed integer linear programming solvers (e.g., gurobi and CPLEX) are frequently used to solve satisfiability problems, i.e., constraint problems with no optimization objective. This repository contains experiments comparing common ILP solvers against common SAT solvers *for SAT problems* to determine how much faster these tailored solvers are. The goals are
 * benchmark these tools against *common*, and next *realistic*, sat benchmarks
 * implement and test sat backends for the Python PuLP modeler. These implementations should be general purpose enough to be useful contributions to the community.
 
@@ -10,7 +10,7 @@ Many off-the-shelf mixed integer solvers (e.g., gurobi and CPLEX) are frequently
 
 First, we look at common benchmarks given for PuLP, being
 * $n$-Queens: $n$-queens problem with $n$ queens on an $n \times n$ chessboard.
-* Sudoku: Sudoku problem with $n^2$ rows, $n^2$ columns, and $n^2$ cells.
+* Sudoku: Sudoku problem with $n$ rows, $n$ columns, and $n$ cells.
 
 ## Solvers
 
